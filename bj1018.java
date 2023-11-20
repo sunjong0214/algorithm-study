@@ -19,7 +19,11 @@ public class bj1018 {
       for(int j=0; j<y; j++)
         str[i][j] = chess.charAt(j);
     }
-//w, b 의 갯수는 32개씩
+    i = 0;
+    j = 0;
+    int check;
+    //하나하나 다 체크한다. 조건문은 i, j + 7 값이 x,y값을 넘어가면 contiune
+    while()
     
     
   }
