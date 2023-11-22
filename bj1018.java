@@ -28,6 +28,7 @@ public class bj1018 {
     boolean B_check =  str[i][j] == 'B';
     boolean W_check = str[i][j] == 'W'; 
     //여기서 이미 시작 알파벳이 무엇인지 처리가능 true
+    //true = w 로 시작 false = b로 시작
     int index_x = 0;
     int index_y = 0;
     int check = 0;
@@ -35,7 +36,7 @@ public class bj1018 {
     int min_check = 0;
     int[] arr = new int[(x-7)*(y-7)];//경우의 수 계산 및 그 크기의 배열 선언 min 값이 들어감
     while (i+7<=x-1 && j+7<=y-1) { // 조건 다시 설정
-      if ( j>index_y+7 ) {
+      if ( j>index_y+7 ) {  
         j = index_y;
         i++;
       }
