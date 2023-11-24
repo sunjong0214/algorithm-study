@@ -21,70 +21,23 @@ public class bj1018 {
       for (j=0; j<y; j++)
         str[i][j] = chess.charAt(j);
     }
-    i = 0;
-    j = 0;
+    int chess_i = 0;
+    int chess_j = 0;
     //하나하나 다 체크한다. 조건문은 i, j + 7 값이 x,y값을 넘어가면 contiune
     //boolean 조건은 선언하고 거쳐가면서 false에서 true로 바뀜
-    boolean B_check =  str[i][j] == 'B';
-    boolean W_check = str[i][j] == 'W'; 
-    //여기서 이미 시작 알파벳이 무엇인지 처리가능 true
+    for(chess_i=0; chess_i<8; chess_i++){
+      boolean B_check =  str[i][j] == 'B';
+      boolean W_check = str[i][j] == 'W'; //여기서 이미 시작 알파벳이 무엇인지 처리가능 true
+      for(chess_j=0; chess_j<8; chess_j++){
+        if(B_check == true){
+          
+        }
+      }
+    }
     //true = w 로 시작 false = b로 시작
-    int index_x = 0;
-    int index_y = 0;
-    int check = 0;
-    int min = 0;
-    int min_check = 0;
-    int[] arr = new int[(x-7)*(y-7)];//경우의 수 계산 및 그 크기의 배열 선언 min 값이 들어감
-    while (i+7<=x-1 && j+7<=y-1) { // 조건 다시 설정
-      if ( j>index_y+7 ) {  
-        j = index_y;
-        i++;
-      }
-      if ( i>index_x+7 ) {
-        i = index_x;
-        arr[min_check] = min;
-        min_check++;
-      }
-      if ( check == 0 ) { //첫 시작이 B, W인지 확인
-        index_x = i;
-        index_y = j;
-        if ( B_check )
-          check = 1;
-        else if ( W_check )
-          check = 2;
-        j++;
-      }
-      if ( check == 1 ) { // B -> W 가 맞는지 확인, 맞다면 다음 인덱스로 아니라면 min++ 후 다음 인덱스
-        if ( W_check ) {
-          j++;
-          check = 2;
-        }
-        else if ( B_check ) {
-          check = 2;
-          j++;
-          min++;
-        }
-        continue;
-      }else if ( check == 2 ) {
-        if ( B_check ) {
-          j++;
-          check = 1;
-        }
-        else if ( W_check ) {
-          check = 1;
-          j++;
-          min++;
-        }
-        continue;
-      }
-    }
-    i = 0;
-    min = arr[0];
-    while(arr[i] <= min_check){
-      if(arr[i] > arr[i+1])
-        min = arr[i+1];
-      i++;
-    }
+    
+    //str 배열을 체스판 형식으로 검사하고 칠해야하는 수를 구하는 함수
+    //위 함수를 나올 수 있는 경우의 수 모두 검사하고 그 중 최소값을 찾아내기
     bw.write(min+"\n");
     br.close();
     bw.flush();
