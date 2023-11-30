@@ -21,7 +21,7 @@ public class bj1018 {
       for (j=0; j<y; j++)
         str[i][j] = chess.charAt(j);
     }
-    int[] minArr = new int[((i-7)*(j-7))];
+    int[] minArr = new int[((i-7)*(j-7))*2];
     int min = 0;
     int iMax = i;
     int jMax = j;
@@ -29,84 +29,98 @@ public class bj1018 {
     j = 0;
     int minIndex = 0;
     while(true){
-      if(i+7>iMax){
+      if(i+8>iMax){
         break;
-      } else if (j+7>jMax){
+      } else if (j+8>jMax){
           j = 0;
           i++;
           continue;
       }
       
-      int chess_i = 0; //체스판 인덱스
-      int chess_j = 0;
-      int check = 0; // 다음이 B = 1, W =2
       //하나하나 다 체크한다. 조건문은 i, j + 7 값이 x,y값을 넘어가면 contiune
       //boolean 조건은 선언하고 거쳐가면서 false에서 true로 바뀜
-      boolean B_check = false;
-      boolean W_check = false;
-      for(chess_i=i; chess_i<i+7; ){
-        chess_j = 0;
-        if (B_check == true){
-          W_check = true;
-          B_check = false;
-        } else if(W_check == true){
-          W_check = false;
-          B_check = true;
-        } else {
-          B_check = str[chess_i][j] == 'B';
-          W_check = str[chess_i][j] == 'W'; //여기서 이미 시작 알파벳이 무엇인지 처리가능 true
-        }
-        if(B_check == true){
-            check = 2;
-          for(chess_j=j; chess_j<j+8; chess_j++){
-            if(str[chess_i][chess_j] == 'W' && check == 1){
-              check = 2;
-              continue;
-            }
-            else if(str[chess_i][chess_j] == 'B' && check == 2){
-              check = 1;
-              continue;
-            }
-            min++;
-            if (str[chess_i][chess_j] == 'W')
-              check = 1;
-            else
-              check = 2;
-            }
+      for (int k=0; k<2; k++){
+        boolean B_check = false;
+        boolean W_check = false;
+        int check = 0; // 다음이 B = 1, W =2
+        int chess_i = 0; //체스판 인덱스
+        int chess_j = 0;
+        for(chess_i=i; chess_i<i+8; ){
+          chess_j = 0;
+          if (B_check == true){
+            W_check = true;
+            B_check = false;
           } else if(W_check == true){
-            check = 1;
-          for(chess_j=j; chess_j<j+8; chess_j++){
-            if(str[chess_i][chess_j] == 'W' && check == 1){
-              check = 2;
-              continue;
-            }
-            else if(str[chess_i][chess_j] == 'B' && check == 2){
-              check = 1;
-              continue;
-            }
-            min++;
-            if (str[chess_i][chess_j] == 'W')
-              check = 1;
-            else
-              check = 2;
-            }
+            W_check = false;
+            B_check = true;
+          } else {
+            B_check = str[chess_i][j] == 'B';
+            W_check = str[chess_i][j] == 'W'; //여기서 이미 시작 알파벳이 무엇인지 처리가능 true
           }
-          chess_i++;
+          if ((str[i][j] == 'W' && k == 1) && chess_i == i && chess_j == 0) {
+            B_check = true;
+            W_check = false;
+            min++;
+            str[i][j] = 'B';
+          } else if((str[i][j] == 'B' && k == 1) && chess_i == i && chess_j == 0) {
+            B_check = false;
+            W_check = true;
+            min++;
+            str[i][j] = 'W';
+          }
+          if(B_check == true){
+              check = 2;
+            for(chess_j=j; chess_j<j+8; chess_j++){
+              if(str[chess_i][chess_j] == 'W' && check == 1){
+                check = 2;
+                continue;
+              }
+              else if(str[chess_i][chess_j] == 'B' && check == 2){
+                check = 1;
+                continue;
+              }
+              min++;
+              if (str[chess_i][chess_j] == 'W')
+                check = 1;
+              else
+                check = 2;
+              }
+            }
+            if(W_check == true){
+                check = 1;
+              for(chess_j=j; chess_j<j+8; chess_j++){
+                if(str[chess_i][chess_j] == 'W' && check == 1){
+                  check = 2;
+                  continue;
+                }
+                else if(str[chess_i][chess_j] == 'B' && check == 2){
+                  check = 1;
+                  continue;
+                }
+                min++;
+                if (str[chess_i][chess_j] == 'W')
+                  check = 1;
+                else
+                  check = 2;
+              }
+            }
+            chess_i++;
+          }
+          if (minIndex < ((iMax-7)*(jMax-7))*2)
+          {
+            minArr[minIndex] = min;
+            minIndex++;
+          }
+          min = 0;
         }
-        if (minIndex < (iMax-7)*(jMax-7))
-        {
-          minArr[minIndex] = min;
-          minIndex++;
-        }
-        min = 0;
         j++;
       }
     int result = 0;
     int sum = minArr[0];
     //true = w 로 시작 false = b로 시작
-    for (i=0; i<minArr.length; i++) {
+    for (i=1; i<minArr.length+1; i++) {
       if (i<minArr.length){
-        if(sum < minArr[i]){
+        if(sum > minArr[i]){
           sum = minArr[i];
         }
       }
