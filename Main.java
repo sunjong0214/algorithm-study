@@ -75,9 +75,6 @@ public class Main {
       }
     }
     for ( i=0; i<tempIndex+1; i++) {
-      if (strTemp[i] == "1"){
-        continue;
-      }
       bw.write(strTemp[i] + "\n");
     }
     br.close();
