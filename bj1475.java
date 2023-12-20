@@ -2,32 +2,29 @@ import java.io.*;
 import java.util.Scanner;
 import java.lang.*;
 
-public class BOJ {
+public class bj1475 {
   public static void main (String[] args) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    int n = Integer.parseInt(br.readLine());
+    String n = br.readLine();
     int[] arr = new int[10];
     int max = 0;
     int temp = 0;
-    int second = 0;
-    while (n > 0) {
-      temp = n%10;
-      // if(temp == 9) {
-      //   temp = 6;
-      // }
-      arr[temp]++;
-      if (max < arr[temp]) {
-        second = temp;
-        max = arr[temp];
-      }
-      n = n/10;
+    for (int i=0; i<n.length(); i++) {
+      temp = n.charAt(i);
+      arr[temp-48]++;
     }
-    if (max <= (arr[6]+arr[9])) {
-      max = (arr[6]+arr[9])/2;
-      if (arr[second] > max) {
-        max = arr[second];
+    max = (arr[6] + arr[9]) / 2;
+    if ((arr[6] + arr[9]) % 2 == 1) {
+      max++;
+    }
+    for (int i=0; i<arr.length; i++) {
+      if (i == 6 || i == 9){
+        continue;
+      }
+      if (arr[i] > max) {
+        max = arr[i];
       }
     }
     bw.write(max + "\n");
