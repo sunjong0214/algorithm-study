@@ -21,25 +21,7 @@ public class Main {
       int size = Integer.parseInt(br.readLine()); // 배열 크기
       deque = arrSplits(br.readLine(), size); // 배열 입력 받은거 숫자로 나누기
       try {
-        if (process(command, deque) == false) {
-          sb.append("[");
-          while (!deque.isEmpty()) {
-            sb.append(deque.pollLast());
-            if (!deque.isEmpty()) {
-              sb.append(",");
-            }
-          }
-          sb.append("]\n");
-        } else {
-          sb.append("[");
-          while (!deque.isEmpty()) {
-            sb.append(deque.pollFirst());
-            if (!deque.isEmpty()) {
-              sb.append(",");
-            }
-          }
-          sb.append("]\n");
-        }
+        printQue(process(command, deque), deque, sb);
       } catch (Exception e) {
         sb.append("error\n");
       }
@@ -47,6 +29,29 @@ public class Main {
     bw.write(sb + "");
     br.close();
     bw.close();
+  }
+
+  static StringBuilder printQue(boolean isRight, LinkedList<Integer> deque, StringBuilder sb) {
+    if (isRight == false) {
+      sb.append("[");
+      while (!deque.isEmpty()) {
+        sb.append(deque.pollLast());
+        if (!deque.isEmpty()) {
+          sb.append(",");
+        }
+      }
+      sb.append("]\n");
+    } else {
+      sb.append("[");
+      while (!deque.isEmpty()) {
+        sb.append(deque.pollFirst());
+        if (!deque.isEmpty()) {
+          sb.append(",");
+        }
+      }
+      sb.append("]\n");
+    }
+    return sb;
   }
 
   static boolean process(String command, LinkedList<Integer> deque) {
