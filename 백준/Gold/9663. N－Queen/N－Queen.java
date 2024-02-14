@@ -1,14 +1,10 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.StringTokenizer;
 
 public class Main {
 
   static int n, result = 0;
-  static int[] arr = new int[40];
   static boolean[] isUsed = new boolean[40]; // 행
   static boolean[] isLUsed = new boolean[40]; // 왼쪽 : x - y가 같음
   static boolean[] isRUsed = new boolean[40]; // 오른쪽 : x + y가 같음
