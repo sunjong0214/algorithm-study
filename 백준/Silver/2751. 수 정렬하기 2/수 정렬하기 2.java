@@ -3,9 +3,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class Main {
 
@@ -13,14 +10,19 @@ public class Main {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+    int[] cnt = new int[2000001];
+
     int n = Integer.parseInt(br.readLine());
-    List<Integer> list = new ArrayList<>();
     for (int i = 0; i < n; i++) {
-      list.add(Integer.parseInt(br.readLine()));
+      int temp = Integer.parseInt(br.readLine());
+      cnt[temp + 1000000]++;
     }
-    Collections.sort(list);
-    for (int x : list) {
-      bw.write(x + "\n");
+
+    for (int i = 0; i < 2000001; i++) {
+      while (cnt[i] > 0) {
+        bw.write((i-1000000) + "\n");
+        cnt[i]--;
+      }
     }
     br.close();
     bw.close();
