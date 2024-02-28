@@ -3,7 +3,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.Arrays;
 
 public class Main {
 
@@ -11,14 +10,18 @@ public class Main {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+    int[] counting = new int[10001];
+
     int n = Integer.parseInt(br.readLine());
-    int[] arr = new int[n];
     for (int i = 0; i < n; i++) {
-      arr[i] = Integer.parseInt(br.readLine());
+      counting[Integer.parseInt(br.readLine())]++;
     }
-    Arrays.sort(arr);
-    for (int x : arr) {
-      bw.write(x + "\n");
+
+    for (int i = 1; i < 10001; i++) {
+      while (counting[i] > 0) {
+        bw.write(i + "\n");
+        counting[i]--;
+      }
     }
     br.close();
     bw.close();
