@@ -22,12 +22,8 @@ public class Main {
     int result = 0;
     int sum = 0;
     for (int i = 0; i < n; i++) {
+      result += sum + arr[i];
       sum += arr[i];
-      if (i != n - 1) {
-        result = (sum + result) + arr[i];
-      } else {
-        result += arr[i];
-      }
     }
     bw.write(result + "\n");
     br.close();
