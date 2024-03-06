@@ -17,12 +17,9 @@ public class Main {
     for (int i = 0; i < n; i++) {
       arr[i] = Integer.parseInt(br.readLine());
     }
-    int idx = n - 1;
     int result = 0;
-    while (money != 0) {
-      if (arr[idx] > money) {
-        idx--;
-      } else {
+    for (int idx = n - 1; idx >= 0; idx--) {
+      if (money >= arr[idx]) {
         result += money / arr[idx];
         money %= arr[idx];
       }
