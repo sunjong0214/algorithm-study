@@ -17,9 +17,8 @@ public class Main {
 
     String str = br.readLine();
     String[] arr = new String[str.length()];
-    arr[str.length() - 1] = str.charAt(str.length() - 1) + "";
-    for (int i = str.length() - 2; i >= 0; i--) {
-      arr[i] = str.charAt(i) + arr[i + 1];
+    for (int i = 0; i < str.length(); i++) {
+      arr[i] = str.substring(i, str.length());
     }
 
     Arrays.sort(arr);
