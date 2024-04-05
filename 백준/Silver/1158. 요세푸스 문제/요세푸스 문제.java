@@ -1,46 +1,34 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-    int n = Integer.parseInt(st.nextToken());
-    int k = Integer.parseInt(st.nextToken());
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-    Queue<Integer> list = new LinkedList<>();
-    Queue<Integer> temp = new LinkedList<>();
-    for (int i = 1; i <= n; i++) {
-      list.offer(i);
-    }
-    int idx = k;
-    StringBuilder sb = new StringBuilder();
-    sb.append("<");
-    while (n != 0) {
-      if (list.isEmpty()) {
-        list = temp;
-      }
-      if (idx != 1) {
-        temp.offer(list.poll());
-        idx--;
-      } else {
-        idx = k;
-        n--;
-        if (n != 0) {
-          sb.append(list.poll() + ", ");
-        } else {
-          sb.append(list.poll());
+        ArrayDeque<Integer> list = new ArrayDeque<>();
+
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
+
+        for (int i = 1; i <= n; i++) {
+            list.offer(i);
         }
-      }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("<");
+        while (n-- > 0) {
+            for (int i = 0; i < k - 1; i++) {
+                list.offer(list.pop());
+            }
+            sb.append(list.pop()).append(", ");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append(">");
+        System.out.println(sb);
+        br.close();
     }
-    sb.append(">");
-    System.out.println(sb);
-    br.close();
-  }
 }
