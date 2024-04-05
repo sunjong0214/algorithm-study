@@ -1,66 +1,32 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.Stack;
-import java.io.BufferedReader;
 import java.io.*;
+import java.util.Stack;
 
 public class Main {
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    int n = Integer.parseInt(br.readLine());
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    char[] temp;
-       Stack<Character> str = new Stack<>();
-    Stack<Character> cursor = new Stack<>();
+        Stack<Character> password = new Stack<>();
+        Stack<Character> temp = new Stack<>();
 
-    for (int i = 0; i < n; i++) {
-      temp = br.readLine().toCharArray();
-      int size = temp.length;
-      for (int j = 0; j < size; j++) {
-        // if (temp[j] == '<') {
-        // cursor.push(str.pop());
-        // } else if (temp[j] == '>') {
-        // str.push(cursor.pop());
-        // } else if (temp[j] == '-') {
-        // str.pop();
-        // }
-        switch (temp[j]) {
-          case '<':
-            try {
-              cursor.push(str.pop());
-            } catch (Exception e) {
-              break;
+        int N = Integer.parseInt(br.readLine());
+
+        for (int i = 0; i < N; i++) {
+            String str = br.readLine();
+            for (int j = 0; j < str.length(); j++) {
+                char log = str.charAt(j);
+                if (log == '<' && !password.isEmpty()) temp.push(password.pop());
+                else if (log == '>' && !temp.isEmpty()) password.push(temp.pop());
+                else if (log == '-' && !password.isEmpty()) password.pop();
+                else  if (log != '<' && log != '>' && log != '-') password.push(log);
             }
-            break;
-          case '>':
-            try {
-              str.push(cursor.pop());
-            } catch (Exception e) {
-              break;
-            }
-            break;
-          case '-':
-            try {
-              str.pop();
-            } catch (Exception e) {
-              break;
-            }
-            break;
-          default:
-            str.push(temp[j]);
-            break;
+            while (!password.isEmpty()) temp.push(password.pop());
+
+            while (!temp.isEmpty()) bw.write(temp.pop());
+            bw.write("\n");
         }
-      }
-      while (!str.empty()) {
-        cursor.push(str.pop());
-      }
-      StringBuilder sb = new StringBuilder();
-      while (!cursor.empty()) {
-        sb.append(cursor.pop());
-      }
-      System.out.println(sb);
+        br.close();
+        bw.close();
     }
-    br.close();
-  }
 }
