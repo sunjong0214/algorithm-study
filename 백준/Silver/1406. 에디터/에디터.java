@@ -1,60 +1,68 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
+import java.io.*;
 import java.util.Stack;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Main {
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    char[] arr = br.readLine().toCharArray();
-    int n = Integer.parseInt(br.readLine());
-    Stack<Character> stack = new Stack<Character>();
-    for (Character str : arr) {
-      stack.push(str);
-    }
-    Stack<Character> cursor = new Stack<>();
-    StringTokenizer st;
-    for (int i = 0; i < n; i++) {
-      String x = br.readLine();
-      if (x.equals("L")) {
-        try {
-          cursor.push(stack.pop());
-        } catch (Exception e) {
-          continue;
+//    public static class ArrayList {
+//        public static final int CAPACITY = 500001;
+//        public Character[] array = new Character[CAPACITY];
+//        public int size = 0;
+//
+//        public void add(Character value) {
+//            array[size++] = value;
+//        }
+//
+//        public Character get(int index) {
+//            return array[index];
+//        }
+//
+//        public Character remove() {
+//            if (size == 0) return null;
+//            Character rm = array[--size];
+//            array[size] = null;
+//            return rm;
+//        }
+//    }
+
+
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        String str = br.readLine();
+        Stack<Character> list = new Stack<>();
+
+        for (int i=0; i<str.length(); i++) {
+            list.add(str.charAt(i));
         }
-      } else if (x.equals("D")) {
-        try {
-          stack.push(cursor.pop());
-        } catch (Exception e) {
-          continue;
+
+        int N = Integer.parseInt(br.readLine());
+        Stack<Character> temp = new Stack<>();
+
+        for (int i=0; i<N; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            String cmd = st.nextToken();
+
+            if (cmd.equals("P")) {
+                list.push(st.nextToken().charAt(0));
+            } else if (cmd.equals("B")) {
+                if(!list.isEmpty()) list.pop();
+            } else if (cmd.equals("L")) {
+                if(!list.isEmpty()) temp.push(list.pop());
+            } else if (cmd.equals("D")) {
+                if(!temp.isEmpty()) list.push(temp.pop());
+            }
         }
-      } else if (x.equals("B")) {
-        try {
-          stack.pop();
-        } catch (Exception e) {
-          continue;
+
+        while (!list.isEmpty()) {
+            temp.push(list.pop());
         }
-      } else {
-        st = new StringTokenizer(x, "P ");
-        stack.push(st.nextToken().charAt(0));
-      }
+        while (!temp.isEmpty()) {
+            bw.write(temp.pop() + "");
+        }
+        br.close();
+        bw.close();
     }
-    while(!stack.empty()) {
-      cursor.push(stack.pop());
-    }
-    StringBuilder str = new StringBuilder();
-    while(!cursor.empty()) {
-      str.append(cursor.pop());
-    }
-    System.out.println(str);
-    br.close();
-    bw.close();
-  }
 }
