@@ -1,36 +1,66 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
-import java.util.Stack;
-import java.util.Scanner;
-import java.util.StringTokenizer;
+import java.io.*;
 
 public class Main {
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    public static class MyStack<T> {
+        private Object[] arr;
+        private int size;
 
-    int n = Integer.parseInt(br.readLine());
-    Stack<Integer> stack = new Stack<>();
-    for (int i = 0; i < n; i++) {
-      int num = Integer.parseInt(br.readLine());
-      if (num == 0) {
-        if (!stack.empty()) {
-          stack.pop();
+        public MyStack() {
+            this.arr = new Object[100001];
+            size = 0;
         }
-        continue;
-      }
-      stack.push(num);
+
+        public void push(T item) {
+            arr[size++] = (T) item;
+        }
+
+        public T pop() {
+            if (size == 0) {
+                return null;
+            }
+            size--;
+            T save = (T) arr[size];
+            arr[size] = null;
+            return save;
+        }
+
+        public T peek() {
+            if (size == 0) {
+                return null;
+            }
+            return (T) arr[size-1];
+        }
+
+        public boolean isEmpty() {
+            return size == 0;
+        }
+
+        public int size() {
+            return size;
+        }
     }
-    int sum = 0;
-    while (!stack.empty()) {
-      sum += stack.pop();
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        MyStack<Integer> stack = new MyStack<>();
+
+        int N = Integer.parseInt(br.readLine());
+
+        for (int i = 0; i < N; i++) {
+            int num = Integer.parseInt(br.readLine());
+            if (num == 0) {
+                stack.pop();
+            } else {
+                stack.push(num);
+            }
+        }
+        int sum = 0;
+        while (!stack.isEmpty()) {
+            sum += stack.pop();
+        }
+        bw.write(sum + "\n");
+        br.close();
+        bw.close();
     }
-    bw.write(sum + "");
-    br.close();
-    bw.close();
-  }
 }
