@@ -1,59 +1,75 @@
-import java.io.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Stack;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.StringTokenizer;
 
 public class Main {
+
+  public static class MyStack<T> {
+
+    private Object[] arr;
+    private int size;
+
+    public MyStack() {
+      this.arr = new Object[100001];
+      size = 0;
+    }
+
+    public void push(T item) {
+      arr[size++] = (T) item;
+    }
+
+    public T pop() {
+      if (size == 0) {
+        return null;
+      }
+      size--;
+      T save = (T) arr[size];
+      arr[size] = null;
+      return save;
+    }
+
+    public T peek() {
+      if (size == 0) {
+        return null;
+      }
+      return (T) arr[size - 1];
+    }
+
+    public boolean isEmpty() {
+      return size == 0;
+    }
+
+    public int size() {
+      return size;
+    }
+  }
 
   public static void main(String[] args) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    int n = Integer.parseInt(br.readLine());
+    MyStack<Integer> stack = new MyStack<>();
 
-    Stack<Integer> stack = new Stack<>(); // 1, 2, 5, 7,
-    Stack<Integer> result = new Stack<>(); // 4, 3, 6, 8
-    StringBuilder sb = new StringBuilder();
+    int N = Integer.parseInt(br.readLine());
+
     int x = 1;
-    int[] arr = new int[n];
-    for (int i = 0; i < n; i++) {
-      arr[i] = Integer.parseInt(br.readLine());// 8, x = 7
-    }
-    int i = 0;
-    while (true) {
-      if (i >= n) {
+    StringBuilder sb = new StringBuilder();
+    while (N-- > 0) {
+      int num = Integer.parseInt(br.readLine());
+      while (x <= num) {
+        stack.push(x++);
+        sb.append("+\n");
+      }
+      if (x > N && !stack.peek().equals(num)) {
+        sb = new StringBuilder();
+        sb.append("NO\n");
         break;
       }
-      if (stack.empty()) {
-        stack.push(x);
-        sb.append("+\n");
-        x++;
-      } else if (arr[i] > stack.peek()) { // 1 2 3 4
-        stack.push(x);
-        sb.append("+\n");
-        x++;
-      } else if (arr[i] == stack.peek()) {
-        if (stack.peek() != arr[i]) {
-          sb = new StringBuilder();
-          sb.append("NO");
-          break;
-        }
-        result.push(stack.pop());
-        sb.append("-\n");
-        i++;
-      } else if (arr[i] < result.peek()) {
-        if (stack.peek() != arr[i]) {
-          sb = new StringBuilder();
-          sb.append("NO");
-          break;
-        }
-        result.push(stack.pop());
-        sb.append("-\n");
-        i++;
-      }
-
+      stack.pop();
+      sb.append("-\n");
     }
     bw.write(sb + "");
     br.close();
