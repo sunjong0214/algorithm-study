@@ -14,24 +14,19 @@ public class Main {
 
     Stack<Integer[]> stack = new Stack<>();
     int N = Integer.parseInt(br.readLine());
-    Integer[][] arr = new Integer[N][2];
+    Integer[][] arr = new Integer[N][1];
     StringTokenizer st = new StringTokenizer(br.readLine());
 
     for (int i = 0; i < N; i++) {
       arr[i][0] = Integer.parseInt(st.nextToken());
-      arr[i][1] = i;
       if (stack.isEmpty()) {
         stack.push(arr[i]);
         continue;
       }
-      if (stack.peek()[0] > arr[i][0]) {
-        stack.push(arr[i]);
-      } else {
-        while (!stack.isEmpty() && stack.peek()[0] < arr[i][0]) {
-          stack.pop()[0] = arr[i][0];
-        }
-        stack.push(arr[i]);
+      while (!stack.isEmpty() && stack.peek()[0] < arr[i][0]) {
+        stack.pop()[0] = arr[i][0];
       }
+      stack.push(arr[i]);
     }
 
     while (!stack.isEmpty()) {
