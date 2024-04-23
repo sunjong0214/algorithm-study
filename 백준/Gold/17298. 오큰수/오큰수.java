@@ -16,13 +16,10 @@ public class Main {
     int N = Integer.parseInt(br.readLine());
     Integer[][] arr = new Integer[N][2];
     StringTokenizer st = new StringTokenizer(br.readLine());
+
     for (int i = 0; i < N; i++) {
       arr[i][0] = Integer.parseInt(st.nextToken());
       arr[i][1] = i;
-    }
-
-
-    for (int i = 0; i < N; i++) {
       if (stack.isEmpty()) {
         stack.push(arr[i]);
         continue;
