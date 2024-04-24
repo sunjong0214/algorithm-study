@@ -1,12 +1,9 @@
-import java.io.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
-import java.util.Deque;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -15,34 +12,35 @@ public class Main {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    String str = br.readLine();
-    StringTokenizer st = new StringTokenizer(str, " ");
-    int n = Integer.parseInt(st.nextToken()); // 큐의 사이즈
-    int x = Integer.parseInt(st.nextToken()); // 뽑아내려고 하는 수
-    str = br.readLine();
-    st = new StringTokenizer(str, " ");
-    LinkedList<Integer> deque = new LinkedList<>();
-    for (int i = 1; i <= n; i++) {
-      deque.addLast(i);
+    StringTokenizer st = new StringTokenizer(br.readLine());
+    int N = Integer.parseInt(st.nextToken()); // 큐의 크기
+    int M = Integer.parseInt(st.nextToken()); // 뽑을 수의 개수
+    st = new StringTokenizer(br.readLine());
+
+    LinkedList<Integer> q = new LinkedList<>();
+
+    for (int i = 1; i <= N; i++) {
+      q.add(i);
     }
+
     int result = 0;
-    while (x != 0) {
-      int num = Integer.parseInt(st.nextToken());
-      int idx = deque.indexOf(num);
-      if (idx > deque.size() / 2) {
-        while (deque.peekFirst() != num) {
-          deque.offerFirst(deque.pollLast());
-          result++;
+    for (int i = 0; i < M; i++) {
+      int loc = Integer.parseInt(st.nextToken());
+      int move = 0;
+      for (int j = 0; j < q.size(); j++) {
+        if (q.peek() == loc) {
+          break;
         }
-        deque.pollFirst();
-        x--;
-      } else {
-        while (deque.peekFirst() != num) {
-          deque.offerLast(deque.pollFirst());
-          result++;
-        }
-        deque.pollFirst();
-        x--;
+        q.add(q.remove());
+        move++;
+      }
+      if (move > q.size() / 2) { // 뒤에서 뽑아야하는 경우라면 빼기
+        move = Math.abs(move - q.size());
+      }
+      q.remove();
+      result += move;
+      if (q.isEmpty()) {
+        break;
       }
     }
     bw.write(result + "");
