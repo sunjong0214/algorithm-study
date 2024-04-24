@@ -1,9 +1,11 @@
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -26,19 +28,20 @@ public class Main {
     int result = 0;
     for (int i = 0; i < M; i++) {
       int loc = Integer.parseInt(st.nextToken());
-      int move = 0;
-      for (int j = 0; j < q.size(); j++) {
-        if (q.peek() == loc) {
-          break;
+      int idx = q.indexOf(loc);
+
+      if (idx > q.size() / 2) {
+        for (int j = 0; j < q.size() - idx; j++) {
+          q.addFirst(q.removeLast());
+          result++;
         }
-        q.add(q.remove());
-        move++;
-      }
-      if (move > q.size() / 2) { // 뒤에서 뽑아야하는 경우라면 빼기
-        move = Math.abs(move - q.size());
+      } else {
+        for (int j = 0; j < idx; j++) {
+          q.add(q.remove());
+          result++;
+        }
       }
       q.remove();
-      result += move;
       if (q.isEmpty()) {
         break;
       }
