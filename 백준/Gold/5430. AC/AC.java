@@ -1,88 +1,73 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
+
+import java.io.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Main {
+    static Deque<Integer> queue = new ArrayDeque<>();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int N = Integer.parseInt(br.readLine());
 
-    int n = Integer.parseInt(br.readLine()); // 테스트 횟수
-    LinkedList<Integer> deque = new LinkedList<>();
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < n; i++) {
-      String command = br.readLine(); // 명령어
-      int size = Integer.parseInt(br.readLine()); // 배열 크기
-      deque = arrSplits(br.readLine(), size); // 배열 입력 받은거 숫자로 나누기
-      try {
-        printQue(process(command, deque), deque, sb);
-      } catch (Exception e) {
-        sb.append("error\n");
-      }
-    }
-    bw.write(sb + "");
-    br.close();
-    bw.close();
-  }
 
-  static StringBuilder printQue(boolean isRight, LinkedList<Integer> deque, StringBuilder sb) {
-    if (isRight == false) {
-      sb.append("[");
-      while (!deque.isEmpty()) {
-        sb.append(deque.pollLast());
-        if (!deque.isEmpty()) {
-          sb.append(",");
+
+        for (int i = 0; i < N; i++) {
+            String f = br.readLine();
+            int n = Integer.parseInt(br.readLine());
+            StringBuilder arr = new StringBuilder(br.readLine());
+            arr.deleteCharAt(0);
+            arr.deleteCharAt(arr.length() - 1);
+
+            boolean r = false;
+            if (!arr.isEmpty()) {
+                addQ(arr);
+            }
+            try {
+                for (int j = 0; j < f.length(); j++) {
+                    if (f.charAt(j) == 'R') {
+                        r = !r;
+                    } else {
+                        if (r) {
+                            queue.removeLast();
+                        } else {
+                            queue.remove();
+                        }
+                    }
+                }
+                bw.write(makeStr(r) + "\n");
+            } catch (Exception e) {
+                bw.write("error\n");
+            }
         }
-      }
-      sb.append("]\n");
-    } else {
-      sb.append("[");
-      while (!deque.isEmpty()) {
-        sb.append(deque.pollFirst());
-        if (!deque.isEmpty()) {
-          sb.append(",");
-        }
-      }
-      sb.append("]\n");
+        br.close();
+        bw.close();
     }
-    return sb;
-  }
 
-  static boolean process(String command, LinkedList<Integer> deque) {
-
-    boolean isRight = true;
-    for (char cmd : command.toCharArray()) {
-      if (cmd == 'R') {
-        isRight = !isRight;
-        continue;
-      }
-      if (cmd == 'D' && isRight == true) {
-        if (deque.isEmpty()) {
-          throw new NoSuchElementException();
+    private static StringBuilder makeStr(boolean r) {
+        StringBuilder arr = new StringBuilder();
+        arr.append("[");
+        int size = queue.size();
+        for (int i = 0; i < size; i++) {
+            if (i == size - 1) {
+                arr.append(queue.remove());
+                break;
+            }
+            if (r) {
+                arr.append(queue.removeLast() + ",");
+            } else {
+                arr.append(queue.remove() + ",");
+            }
         }
-        deque.pollFirst();
-      } else {
-        if (deque.isEmpty()) {
-          throw new NoSuchElementException();
-        }
-        deque.pollLast();
-      }
+        arr.append("]");
+        return arr;
     }
-    return isRight;
-  }
 
-  static LinkedList<Integer> arrSplits(String str, int idx) {
-    StringTokenizer st = new StringTokenizer(str, "[,]");
-    LinkedList<Integer> deque = new LinkedList<>();
-    while (st.hasMoreTokens()) {
-      deque.addLast(Integer.parseInt(st.nextToken()));
+    private static void addQ(StringBuilder split) {
+        String[] s = split.toString().split(",");
+        for (String string : s) {
+            queue.offer(Integer.parseInt(string));
+        }
     }
-    return deque;
-  }
 }
