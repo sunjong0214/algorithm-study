@@ -1,39 +1,35 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.util.Stack;
 
 public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
 
-    int n = Integer.parseInt(br.readLine());
-    StringBuilder sb = new StringBuilder();
-    while (n-- > 0) {
-      Stack<Character> stack = new Stack<>();
-      String vps = br.readLine();
-      int len = 0;
-      while (len < vps.length()) {
-        if (vps.charAt(len) == '(')
-          stack.push(vps.charAt(len));
-        else {
-          if (stack.isEmpty()) {
-            sb.append("NO\n");
-            break;
-          }
-          stack.pop();
+        for (int i = 0; i < n; i++) {
+            Stack<Character> stack = new Stack<>();
+            String str = br.readLine();
+            for (int j = 0; j < str.length(); j++) {
+                if (stack.isEmpty() && str.charAt(j) == ')') {
+                    stack.push(')');
+                    break;
+                }
+                if (str.charAt(j) == '(') {
+                    stack.push(str.charAt(j));
+                } else if (!stack.isEmpty() && stack.peek() == '(') {
+                    stack.pop();
+                }
+            }
+            if (stack.isEmpty()) {
+                System.out.println("YES");
+            } else {
+                System.out.println("NO");
+            }
         }
-        len++;
-      }
-      if (stack.isEmpty() && len == vps.length()) {
-        sb.append("YES\n");
-      } else if (len == vps.length()) {
-        sb.append("NO\n");
-      }
+        br.close();
+        bw.close();
     }
-    sb.deleteCharAt(sb.length() -1);
-    System.out.println(sb);
-    br.close();
-  }
 }
