@@ -1,48 +1,46 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+
+import java.io.*;
 import java.util.Stack;
 
 public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-    while (true) {
-      Stack<Character> stack = new Stack<>();
-      String str = br.readLine();
-      int i = 0;
-      boolean yes = true;
-      if (str.charAt(0) == '.') {
-        break;
-      }
-      while (str.charAt(i) != '.') {
-        if (str.charAt(i) == '(') {
-          stack.push('(');
-        } else if (str.charAt(i) == '[') {
-          stack.push('[');
-        } else if (str.charAt(i) == ')') {
-          if (stack.isEmpty() == true ||stack.peek() != '(') {
-            yes = !yes;
-            break;
-          }
-          stack.pop();
-        } else if (str.charAt(i) == ']') {
-          if (stack.isEmpty() == true || stack.peek() != '[') {
-            yes = !yes;
-            break;
-          }
-          stack.pop();
+        while (true) {
+            Stack<Character> stack = new Stack<>();
+            String str = br.readLine();
+            boolean is = true;
+            if (str.equals(".")) {
+                break;
+            }
+            for (int i = 0; i < str.length() - 1; i++) {
+                if (str.charAt(i) == '.') {
+                    break;
+                }
+                if (str.charAt(i) == '(') {
+                    stack.push(str.charAt(i));
+                } else if (str.charAt(i) == '[') {
+                    stack.push(str.charAt(i));
+                } else if (str.charAt(i) == ')') {
+                    if (stack.isEmpty() || stack.peek() != '(') {
+                        is = false;
+                        break;
+                    }
+                    stack.pop();
+                } else if (str.charAt(i) == ']') {
+                    if (stack.isEmpty() || stack.peek() != '[') {
+                        is = false;
+                        break;
+                    }
+                    stack.pop();
+                }
+            }
+            if (stack.isEmpty() && is) {
+                System.out.println("yes");
+            } else {
+                System.out.println("no");
+            }
         }
-        i++;
-      }
-      if (yes == true && stack.isEmpty() == true)
-        System.out.println("yes");
-      else
-        System.out.println("no");
     }
-    br.close();
-  }
 }
