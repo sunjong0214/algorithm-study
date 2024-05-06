@@ -1,38 +1,36 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+
+import java.io.*;
 import java.util.Stack;
 
 public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-    int n = Integer.parseInt(br.readLine()); // 테스트 횟수
-    String s;
-    int result = 0;
-    for (int i = 0; i < n; i++) {
-      s = br.readLine();
-      if (s.length() % 2 == 1) {
-        continue;
-      }
-      Stack<Character> stack = new Stack<>();
-      int j = 1;
-      stack.push(s.charAt(0));
-      while (j != s.length()) {
-        if (stack.isEmpty() == true || stack.peek() != s.charAt(j)) {
-          stack.push(s.charAt(j));
-        } else if (stack.peek() == s.charAt(j)) {
-          stack.pop();
+        int n = Integer.parseInt(br.readLine());
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            Stack<Character> stack = new Stack<>();
+            String str = br.readLine();
+            for (int j = 0; j < str.length(); j++) {
+                if (str.charAt(j) == 'A') {
+                    if (!stack.isEmpty() && stack.peek() == 'A') {
+                        stack.pop();
+                        continue;
+                    }
+                    stack.push(str.charAt(j));
+                } else if (str.charAt(j) == 'B') {
+                    if (!stack.isEmpty() && stack.peek() == 'B') {
+                        stack.pop();
+                        continue;
+                    }
+                    stack.push(str.charAt(j));
+                }
+            }
+            if (stack.isEmpty()) {
+                result++;
+            }
         }
-        j++;
-      }
-      if (stack.isEmpty() == true) {
-        result++;
-      }
+        System.out.println(result);
     }
-    System.out.println(result);
-  }
 }
