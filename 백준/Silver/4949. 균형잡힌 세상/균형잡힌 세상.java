@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.Stack;
 
@@ -42,5 +41,7 @@ public class Main {
                 System.out.println("no");
             }
         }
+        br.close();
+        bw.close();
     }
 }
