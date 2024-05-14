@@ -1,62 +1,4 @@
-// import java.io.BufferedReader;
-// import java.io.IOException;
-// import java.io.InputStreamReader;
-// import java.util.LinkedList;
-// import java.util.Queue;
-// import java.util.StringTokenizer;
 
-// public class Main {
-
-//   public static void main(String[] args) throws IOException {
-//     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-//     StringTokenizer st = new StringTokenizer(br.readLine());
-//     int x = Integer.parseInt(st.nextToken()); // 행
-//     int y = Integer.parseInt(st.nextToken()); // 열
-//     int[][] board = new int[101][101];
-//     boolean[][] vis = new boolean[101][101];
-//     int[][] dit = new int[101][101];
-//     // 초기 보드 설정
-//     for (int i = 0; i < x; i++) {
-//       String str = br.readLine();
-//       for (int j = 0; j < y; j++) {
-//         board[i][j] = str.charAt(j) - 48;
-//       }
-//     }
-//     // 상하좌우 비교할 값
-//     int[] dx = { 1, 0, -1, 0 };
-//     int[] dy = { 0, 1, 0, -1 };
-
-//     Queue<int[]> queue = new LinkedList<>();
-//     queue.offer(new int[] { 0, 0 });
-//     vis[0][0] = true;
-//     int result = 0;
-//     dit[0][0] = 0;
-//     while (!queue.isEmpty()) {
-//       int qx = queue.peek()[0];
-//       int qy = queue.peek()[1];
-//       result = dit[qx][qy] + 1;
-//       queue.poll();
-//       for (int i = 0; i < 4; i++) {
-//         int rx = qx + dx[i];
-//         int ry = qy + dy[i];
-//         if (rx < 0 || rx > 100 || ry < 0 || ry > 100)
-//           continue;
-//         if (vis[rx][ry] == true)
-//           continue;
-//         vis[rx][ry] = true;
-//         if (board[rx][ry] == 0) 
-//           continue;
-//         queue.offer(new int[] { rx, ry });
-//         dit[rx][ry] = result;
-//       }
-//     }
-//     System.out.println(dit[x-1][y-1] + 1);
-//     br.close();
-//   }
-// }
-
-// 내가 리팩토링 해본 코드
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -64,72 +6,69 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-class Board {
-  int[][] board;
-  boolean[][] vis;
-  int[][] dit;
-
-  public Board() {
-    this.board = new int[101][101];
-    this.vis = new boolean[101][101];
-    this.dit = new int[101][101];
-  }
-
-  public void addboard(int x, int y, char c) {
-    this.board[x][y] = c - 48;
-  }
-}
-
 public class Main {
+
+  static int[][] cArr = new int[501][501];
+  static int[][] arr = new int[501][501];
+  static boolean[][] isVisit = new boolean[501][501];
+  static int x;
+  static int y;
+  static Queue<Integer[]> queue = new LinkedList<>();
+  static int[] dx = {1, 0, -1, 0};
+  static int[] dy = {0, 1, 0, -1};
+
 
   public static void main(String[] args) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     StringTokenizer st = new StringTokenizer(br.readLine());
-    int x = Integer.parseInt(st.nextToken()); // 행
-    int y = Integer.parseInt(st.nextToken()); // 열
-    Board board = new Board();
-    // 초기 보드 설정
-    for (int i = 0; i < x; i++) {
-      String str = br.readLine();
-      for (int j = 0; j < y; j++) {
-        board.addboard(i,j, str.charAt(j));
-      }
-    }
-    // 상하좌우 비교할 값
-    int[] dx = { 1, 0, -1, 0 };
-    int[] dy = { 0, 1, 0, -1 };
+    y = Integer.parseInt(st.nextToken());
+    x = Integer.parseInt(st.nextToken());
 
-    Queue<int[]> queue = new LinkedList<>();
-    queue.offer(new int[] { 0, 0 });
-    board.vis[0][0] = true;
-    board.dit[0][0] = 0;
-    execute(board, queue, dx, dy);
-    System.out.println(board.dit[x - 1][y - 1] + 1);
+    setArr(br);
+    queue.add(new Integer[]{0, 0});
+    isVisit[0][0] = true;
+    cArr[0][0] = 1;
+    bfs();
+    System.out.println(cArr[y-1][x-1]);
     br.close();
   }
-  
-  static void execute(Board board, Queue<int[]> queue, int[] dx, int[] dy) {
-    int result = 0;
+
+  private static void bfs() {
     while (!queue.isEmpty()) {
-      int qx = queue.peek()[0];
-      int qy = queue.peek()[1];
-      result = board.dit[qx][qy] + 1;
-      queue.poll();
-      for (int i = 0; i < 4; i++) {
-        int rx = qx + dx[i];
-        int ry = qy + dy[i];
-        if (rx < 0 || rx > 100 || ry < 0 || ry > 100)
-          continue;
-        if (board.vis[rx][ry] == true)
-          continue;
-          board.vis[rx][ry] = true;
-        if (board.board[rx][ry] == 0)
-          continue;
-        queue.offer(new int[] { rx, ry });
-        board.dit[rx][ry] = result;
+       int qy = queue.peek()[0];
+       int qx = queue.peek()[1];
+       queue.poll();
+       checking(qy, qx);
+    }
+  }
+
+  private static void checking(int qy, int qx) {
+    for (int i = 0; i < 4; i++) {
+      if (qy + dy[i] < 0 || qy + dy[i] >= y) {
+        continue;
+      }
+      if (qx + dx[i] < 0 || qx + dx[i] >= x) {
+        continue;
+      }
+      if (arr[qy + dy[i]][qx + dx[i]] == 1 && !isVisit[qy + dy[i]][qx + dx[i]]) {
+        queue.add(new Integer[]{qy + dy[i], qx + dx[i]});
+        isVisit[qy + dy[i]][qx + dx[i]] = true;
+        cArr[qy + dy[i]][qx + dx[i]] = cArr[qy][qx] + 1;
+      }
+    }
+  }
+
+  private static void setArr(BufferedReader br) throws IOException {
+    for (int i = 0; i < y; i++) {
+      String str = br.readLine();
+      for (int j = 0; j < x; j++) {
+        int num = str.charAt(j) - 48;
+        arr[i][j] = num;
+        if (num == 0) {
+          isVisit[i][j] = true;
+        }
       }
     }
   }
 }
-
