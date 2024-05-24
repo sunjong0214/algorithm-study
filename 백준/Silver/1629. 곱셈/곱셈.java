@@ -1,31 +1,33 @@
+
 import java.io.BufferedReader;
-import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
-
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-    StringTokenizer st = new StringTokenizer(br.readLine());
-    int x = Integer.parseInt(st.nextToken());
-    int mult = Integer.parseInt(st.nextToken());
-    int divi = Integer.parseInt(st.nextToken());
-
-    System.out.println(pow(x, mult, divi));
-  }
-
-  static long pow(int x, int mult, int divi) {
-    if (mult == 1) {
-      return x % divi;
+    static long A;
+    static long B;
+    static long C;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        A = Integer.parseInt(st.nextToken());
+        B = Integer.parseInt(st.nextToken());
+        C = Integer.parseInt(st.nextToken());
+        System.out.println(func(A, B));
+        br.close();
     }
-    long value = pow(x, mult / 2, divi);
-    value = value * value % divi;
-    if (mult % 2 == 0) return value;
-    return value * x % divi;
-  }
+
+    private static long func(long a, long b) {
+        if (b == 1) {
+            return a % C;
+        }
+        long result = func(a, b / 2);
+
+        if (b % 2 == 1) {
+            return ((result * result % C) * a) % C;
+        }
+
+        return result * result % C;
+    }
 }
