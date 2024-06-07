@@ -1,59 +1,56 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-  static int[][] paper;
-  static int blue;
-  static int white;
+    static int N;
+    static int[][] arr;
+    static int[] color = new int[2];
 
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    int n = Integer.parseInt(br.readLine());
-    paper = new int[n][n];
-    for (int i = 0; i < n; i++) {
-      StringTokenizer st = new StringTokenizer(br.readLine());
-      for (int j = 0; j < n; j++) {
-        paper[i][j] = Integer.parseInt(st.nextToken());
-      }
-    }
-    cutting(n, 0, 0);
-    bw.write(white + "\n");
-    bw.write(blue + "\n");
-    br.close();
-    bw.close();
-  }
+        N = Integer.parseInt(br.readLine());
+        arr = new int[N][N];
 
-  static boolean check(int n, int x, int y) {
-    for (int i = x; i < x + n; i++) {
-      for (int j = y; j < y + n; j++) {
-        if (paper[x][y] != paper[i][j]) {
-          return false;
+        for (int i = 0; i < N; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < N; j++) {
+                arr[i][j] = Integer.parseInt(st.nextToken());
+            }
         }
-      }
-    }
-    return true;
-  }
 
-  static void cutting(int n, int x, int y) {
-    if (check(n, x, y)) {
-      if (paper[x][y] == 1) {
-        blue++;
-      } else {
-        white++;
-      }
-      return;
+        func(0, 0, N);
+
+        System.out.println(color[0]);
+        System.out.println(color[1]);
+        br.close();
     }
-    n /= 2;
-    for (int i = 0; i < 2; i++) {
-      for (int j = 0; j < 2; j++) {
-        cutting(n, x + i * n, y + j * n);
-      }
+
+    static void func(int y, int x, int n) {
+        if (cheak(y, x, n)) {
+            color[arr[y][x]]++;
+            return;
+        }
+        int idx = n / 2;
+        func(y, x, idx);
+        func(y + idx, x, idx);
+        func(y, x + idx, idx);
+        func(y + idx, x + idx, idx);
     }
-  }
+
+    private static boolean cheak(int y, int x, int n) {
+        int s = arr[y][x];
+        for (int i = y; i < y + n; i++) {
+            for (int j = x; j < x + n; j++) {
+                if (s != arr[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }
