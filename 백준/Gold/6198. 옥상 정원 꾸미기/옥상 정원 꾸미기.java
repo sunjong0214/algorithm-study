@@ -8,8 +8,8 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         long n = Integer.parseInt(br.readLine());
         Stack<Long> stack = new Stack<>();
-        long sum = 0L;
-        for (long i = 0L; i < n; i++) {
+        long sum = 0;
+        for (long i = 0; i < n; i++) {
             long building = Long.parseLong(br.readLine());
             if (!stack.isEmpty() && stack.peek() > building) {
                 sum += stack.size();
