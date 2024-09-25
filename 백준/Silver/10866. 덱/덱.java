@@ -1,70 +1,58 @@
 import java.io.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
 
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-    int n = Integer.parseInt(br.readLine());
-
-    Deque<Integer> deque = new LinkedList<>();
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < n; i++) {
-      String str = br.readLine();
-      StringTokenizer st = new StringTokenizer(str, " ");
-      switch (st.nextToken()) {
-        case "push_front":
-          deque.addFirst(Integer.parseInt(st.nextToken()));
-          break;
-        case "push_back":
-          deque.addLast(Integer.parseInt(st.nextToken()));
-          break;
-        case "pop_front":
-          if (deque.isEmpty())
-            sb.append(-1 + "\n");
-          else
-            sb.append(deque.removeFirst() + "\n");
-          break;
-        case "pop_back":
-          if (deque.isEmpty())
-            sb.append(-1 + "\n");
-          else
-            sb.append(deque.removeLast() + "\n");
-          break;
-        case "size":
-          sb.append(deque.size() + "\n");
-          break;
-        case "empty":
-          if (!deque.isEmpty())
-            sb.append(0 + "\n");
-          else
-            sb.append(1 + "\n");
-          break;
-        case "front":
-          if (deque.isEmpty())
-            sb.append(-1 + "\n");
-          else
-            sb.append(deque.peekFirst() + "\n");
-          break;
-        case "back":
-          if (deque.isEmpty())
-            sb.append(-1 + "\n");
-          else
-            sb.append(deque.peekLast() + "\n");
-          break;
-      }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int n = Integer.parseInt(br.readLine());
+        StringTokenizer st;
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
+            String cmd = st.nextToken();
+            if (cmd.equals("push_front")) {
+                int num = Integer.parseInt(st.nextToken());
+                dq.push(num);
+            } else if (cmd.equals("push_back")) {
+                int num = Integer.parseInt(st.nextToken());
+                dq.offer(num);
+            } else if (cmd.equals("pop_front")) {
+                if (dq.isEmpty()) {
+                    bw.write(-1 + "\n");
+                    continue;
+                }
+                bw.write(dq.removeFirst() + "\n");
+            } else if (cmd.equals("pop_back")) {
+                if (dq.isEmpty()) {
+                    bw.write(-1 + "\n");
+                    continue;
+                }
+                bw.write(dq.removeLast() + "\n");
+            } else if (cmd.equals("size")) {
+                bw.write(dq.size() + "\n");
+            } else if (cmd.equals("empty")) {
+                if (dq.isEmpty()) {
+                    bw.write(1 + "\n");
+                } else {
+                    bw.write(0 + "\n");
+                }
+            } else if (cmd.equals("front")) {
+                if (dq.isEmpty()) {
+                    bw.write(-1 + "\n");
+                    continue;
+                }
+                bw.write(dq.peekFirst() + "\n");
+            } else if (cmd.equals("back")) {
+                if (dq.isEmpty()) {
+                    bw.write(-1 + "\n");
+                    continue;
+                }
+                bw.write(dq.peekLast() + "\n");
+            }
+        }
+        br.close();
+        bw.close();
     }
-    bw.write(sb + "");
-    br.close();
-    bw.close();
-  }
 }
