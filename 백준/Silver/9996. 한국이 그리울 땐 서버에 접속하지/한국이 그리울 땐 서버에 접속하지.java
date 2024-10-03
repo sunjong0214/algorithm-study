@@ -1,34 +1,37 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-    int n = Integer.parseInt(br.readLine());
-    String rule = br.readLine();
-    String[] rules;
-    rules = rule.split("\\*| ");
-
-    for (int i = 0; i < n; i++) {
-      String str = br.readLine();
-      if (str.length() < rules[0].length() + rules[1].length()) {
-        bw.write("NE\n");
-        continue;
-      }
-      String front = str.substring(0, rules[0].length());
-      String back = str.substring(str.length() - rules[1].length(), str.length());
-      if (front.equals(rules[0]) && back.equals(rules[1])) {
-        bw.write("DA\n");
-      } else {
-        bw.write("NE\n");
-      }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int n = Integer.parseInt(br.readLine());
+        String patten = br.readLine();
+        String[] split = patten.split("\\*");
+        for (int i = 0; i < n; i++) {
+            boolean isP = true;
+            String file = br.readLine();
+            for (int j = 0; j < split[0].length(); j++) {
+                if (file.charAt(j) != split[0].charAt(j)) {
+                    bw.write("NE\n");
+                    isP = false;
+                    break;
+                }
+            }
+            if (!isP) continue;
+            file = file.substring(split[0].length());
+            int sIdx = 1;
+            for (int j = split[1].length() - 1; j >= 0; j--) {
+                if (file.length() < split[1].length() || file.charAt(file.length() - sIdx++) != split[1].charAt(j)) {
+                    bw.write("NE\n");
+                    isP = false;
+                    break;
+                }
+            }
+            if (!isP) continue;
+            bw.write("DA\n");
+        }
+        br.close();
+        bw.close();
     }
-    br.close();
-    bw.close();
-  }
 }
