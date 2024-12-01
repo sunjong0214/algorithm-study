@@ -1,61 +1,36 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class Main {
-  static int[] D;
-  static int n;
-  static int one;
-  static int two;
-  static int three;
-  static int num;
+    static int min = Integer.MAX_VALUE;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-    n = Integer.parseInt(br.readLine());
-    D = new int[1000001];
-    D[1] = 0;
-    if (n != 1) {
-      func(2);
-    } else {
-      System.out.println(0);
+        int n = Integer.parseInt(br.readLine());
+        func(n, 0);
+        bw.write(min + "");
+        br.close();
+        bw.close();
     }
-    br.close();
-  }
 
-  static void func(int x) {
-    if (x == 1) {
-      System.out.println(1);
-      return;
-    }
-    if (x == n) {
-      num = D[x - 1] + 1;
-      if (x % 3 == 0) {
-        if (num > D[x / 3] + 1) {
-          num = D[x / 3] + 1;
+    private static void func(int n, int op) {
+        if (n == 1) {
+            min = Math.min(min, op);
+            return;
         }
-      }
-      if (x % 2 == 0) {
-        if (num > D[x / 2] + 1) {
-          num = D[x / 2] + 1;
+        if (min <= op) {
+            return;
         }
-      }
-      System.out.println(num);
-      return;
+        if (n % 3 == 0) {
+            func(n / 3, op + 1);
+        }
+        if (n % 2 == 0) {
+            func(n / 2, op + 1);
+        }
+        func(n - 1, op + 1);
     }
-    num = D[x - 1] + 1;
-    if (x % 3 == 0) {
-      if (num > D[x / 3] + 1) {
-        num = D[x / 3] + 1;
-      }
-    }
-    if (x % 2 == 0) {
-      if (num > D[x / 2] + 1) {
-        num = D[x / 2] + 1;
-      }
-    }
-    D[x] = num;
-    func(x + 1);
-  }
 }
