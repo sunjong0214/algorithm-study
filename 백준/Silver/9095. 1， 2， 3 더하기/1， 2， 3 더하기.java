@@ -5,37 +5,34 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 public class Main {
+    static int[] result;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-  static int[] D = new int[11];
-  static int n;
-
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-    int N = Integer.parseInt(br.readLine());
-
-    D[1] = 1;
-    D[2] = 2;
-    D[3] = 4;
-    for (int i = 0; i < N; i++) {
-      n = Integer.parseInt(br.readLine());
-      func(4);
-      bw.write(D[n] + "\n");
+        int n = Integer.parseInt(br.readLine());
+        result = new int[n];
+        for (int i = 0; i < n; i++) {
+            int num = Integer.parseInt(br.readLine());
+            func(num, i);
+        }
+        for (int result : result) {
+            bw.write(result + "\n");
+        }
+        br.close();
+        bw.close();
     }
-    br.close();
-    bw.close();
-  }
 
-  static void func(int x) {
-    if (n == 0 || n == 1 || n == 2 || n == 3) {
-      return;
+    private static void func(int n, int index) {
+        if (n == 0) {
+            result[index]++;
+            return;
+        }
+        if (n < 0) {
+            return;
+        }
+        func(n - 3, index);
+        func(n - 2, index);
+        func(n - 1, index);
     }
-    if (x == n) {
-      D[x] = D[x - 1] + D[x - 2] + D[x - 3];
-      return;
-    }
-    D[x] = D[x - 1] + D[x - 2] + D[x - 3];
-    func(x + 1);
-  }
 }
