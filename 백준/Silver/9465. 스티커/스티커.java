@@ -40,9 +40,7 @@ public class Main {
         if (column == 1 || dp[row][column] != -1) {
             return dp[row][column];
         }
-        dp[row][column] = Math.max(func(1 - row, column - 1),
-                Math.max(func(row, column - 2), func(1 - row, column - 2)))
-                        + arr[row][column];
+        dp[row][column] = Math.max(func(1- row, column - 1), func(1 - row, column - 2)) + arr[row][column];
         return dp[row][column];
     }
 }
