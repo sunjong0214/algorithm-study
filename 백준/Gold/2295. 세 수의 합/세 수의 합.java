@@ -26,18 +26,16 @@ public class Main {
         Arrays.sort(sum);
         Arrays.sort(arr);
 
-        int max = 0;
         for (int i = n - 1; i >= 0; i--) {
             for (int j = i; j >= 0; j--) {
                 int i1 = Arrays.binarySearch(sum, arr[i] - arr[j]);
                 if (i1 >= 0) {
-                    max = Math.max(max, sum[i1] + arr[j]);
+                    bw.write(sum[i1] + arr[j] + "");
+                    br.close();
+                    bw.close();
+                    return;
                 }
             }
         }
-
-        bw.write(max + "");
-        br.close();
-        bw.close();
     }
 }
