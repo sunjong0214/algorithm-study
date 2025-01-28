@@ -3,46 +3,41 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int n;
-    static int k;
-    static int[] amount;
-    static int[] weight;
-    static long[][] dp;
+    static int[] weight, cost;
+    static int[][] dp;
+    static int c, n;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
-        amount = new int[n];
-        weight = new int[n];
-        dp = new long[n][k + 1];
-        for (int i = 0; i < n; i++) {
+        c = Integer.parseInt(st.nextToken());
+        weight = new int[n + 1];
+        cost = new int[n + 1];
+        dp = new int[n + 1][c + 1];
+        for (int i = 1; i <= n; i++) {
             st = new StringTokenizer(br.readLine());
-            amount[i] = Integer.parseInt(st.nextToken());
             weight[i] = Integer.parseInt(st.nextToken());
+            cost[i] = Integer.parseInt(st.nextToken());
         }
 
-        bw.write(func(n - 1, k) + "");
-        br.close();
-        bw.close();
-    }
-
-    private static long func(int i, int k) {
-        if (i < 0) {
-            return 0;
-        }
-        if (dp[i][k] == 0) {
-            if (amount[i] > k) {
-                dp[i][k] = func(i - 1, k);
-            } else {
-                dp[i][k] = Math.max(func(i - 1, k), func(i - 1, k - amount[i]) + weight[i]);
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= c; j++) {
+                if (j - weight[i] < 0) {
+                    dp[i][j] = dp[i - 1][j];
+                    continue;
+                }
+                dp[i][j] = Math.max(dp[i - 1][j], cost[i] + dp[i - 1][j - weight[i]]);
             }
         }
-        return dp[i][k];
+
+        bw.write(dp[n][c] + "");
+        br.close();
+        bw.close();
     }
 }
