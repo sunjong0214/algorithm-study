@@ -3,46 +3,43 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
+    static int[][] dp;
     static int n;
-    static long result;
-    static long[][] dp;
+    static int mod = 1000000000;
+    static long result = 0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         n = Integer.parseInt(br.readLine());
+        dp = new int[10][n + 1];
 
-        dp = new long[n + 1][10];
-
-        for (int i = 0; i < 10; i++) {
-            dp[1][i] = 1;
-        }
-
-        long result = 0;
         for (int i = 1; i <= 9; i++) {
-            result += func(i, n);
+            result += func(i, 1) % mod;
         }
-
-        bw.write(result % 1000000000 + "");
+        bw.write(String.valueOf(result % mod));
         br.close();
         bw.close();
     }
 
-    private static long func(int num, int idx) {
-        if (idx == 1) {
-            return dp[idx][num];
+    private static int func(int num, int idx) {
+        if (idx == n) {
+            return 1;
         }
-        if (dp[idx][num] == 0) {
-            if (num == 0) {
-                dp[idx][num] = func(1, idx - 1);
-            } else if (num == 9) {
-                dp[idx][num] = func(8, idx - 1);
-            } else {
-                dp[idx][num] = func(num + 1, idx - 1) + func(num - 1, idx - 1);
-            }
+        if (dp[num][idx] != 0) {
+            return dp[num][idx] % mod;
         }
-        return dp[idx][num] % 1000000000;
+        if (num == 0) {
+            dp[num][idx] = func(1, idx + 1);
+        } else if (num == 9) {
+            dp[num][idx] = func(8, idx + 1);
+        } else {
+            dp[num][idx] = func(num - 1, idx + 1) + func(num + 1, idx + 1);
+        }
+        return dp[num][idx] % mod;
     }
 }
