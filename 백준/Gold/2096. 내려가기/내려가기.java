@@ -7,35 +7,44 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int N;
-    static int[][] dp, arr;
+    static int[] minDp, maxDp;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         N = Integer.parseInt(br.readLine());
-        dp = new int[N + 1][3];
-        arr = new int[N + 1][3];
+        minDp = new int[3];
+        maxDp = new int[3];
 
         for (int i = 1; i <= N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            arr[i][0] = Integer.parseInt(st.nextToken());
-            arr[i][1] = Integer.parseInt(st.nextToken());
-            arr[i][2] = Integer.parseInt(st.nextToken());
-        }
+            int x0 = Integer.parseInt(st.nextToken());
+            int x1 = Integer.parseInt(st.nextToken());
+            int x2 = Integer.parseInt(st.nextToken());
 
-        for (int i = 1; i <= N; i++) {
-            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1]) + arr[i][0];
-            dp[i][1] = Math.max(dp[i - 1][0], Math.max(dp[i - 1][1], dp[i - 1][2])) + arr[i][1];
-            dp[i][2] = Math.max(dp[i - 1][1], dp[i - 1][2]) + arr[i][2];
-        }
-        bw.write(Math.max(dp[N][0], Math.max(dp[N][1], dp[N][2])) + " ");
+            if (i == 1) {
+                minDp[0] = maxDp[0] = x0;
+                minDp[1] = maxDp[1] = x1;
+                minDp[2] = maxDp[2] = x2;
+                continue;
+            }
 
-        for (int i = 1; i <= N; i++) {
-            dp[i][0] = Math.min(dp[i - 1][0], dp[i - 1][1]) + arr[i][0];
-            dp[i][1] = Math.min(dp[i - 1][0], Math.min(dp[i - 1][1], dp[i - 1][2])) + arr[i][1];
-            dp[i][2] = Math.min(dp[i - 1][1], dp[i - 1][2]) + arr[i][2];
+            int b0 = maxDp[0];
+            int b1 = maxDp[1];
+            int b2 = maxDp[2];
+            maxDp[0] = Math.max(b0, b1) + x0;
+            maxDp[1] = Math.max(b0, Math.max(b1, b2)) + x1;
+            maxDp[2] = Math.max(b1, b2) + x2;
+
+            b0 = minDp[0];
+            b1 = minDp[1];
+            b2 = minDp[2];
+            minDp[0] = Math.min(b0, b1) + x0;
+            minDp[1] = Math.min(b0, Math.min(b1, b2)) + x1;
+            minDp[2] = Math.min(b1, b2) + x2;
         }
-        bw.write(Math.min(dp[N][0], Math.min(dp[N][1], dp[N][2])) + "");
+        bw.write(Math.max(maxDp[0], Math.max(maxDp[1], maxDp[2])) + " " + Math.min(minDp[0],
+                Math.min(minDp[1], minDp[2])));
         br.close();
         bw.close();
     }
