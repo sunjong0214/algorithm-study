@@ -3,40 +3,37 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int[] weight, cost;
+    static int n, k;
+    static int[] w, v;
     static int[][] dp;
-    static int c, n;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
-        c = Integer.parseInt(st.nextToken());
-        weight = new int[n + 1];
-        cost = new int[n + 1];
-        dp = new int[n + 1][c + 1];
+        k = Integer.parseInt(st.nextToken());
+        w = new int[n + 1];
+        v = new int[n + 1];
+        dp = new int[n + 1][k + 1];
         for (int i = 1; i <= n; i++) {
             st = new StringTokenizer(br.readLine());
-            weight[i] = Integer.parseInt(st.nextToken());
-            cost[i] = Integer.parseInt(st.nextToken());
+            w[i] = Integer.parseInt(st.nextToken());
+            v[i] = Integer.parseInt(st.nextToken());
         }
-
         for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= c; j++) {
-                if (j - weight[i] < 0) {
+            for (int j = 1; j <= k; j++) {
+                if (j - w[i] >= 0) {
+                    dp[i][j] = Math.max(dp[i - 1][j], v[i] + dp[i - 1][j - w[i]]);
+                } else {
                     dp[i][j] = dp[i - 1][j];
-                    continue;
                 }
-                dp[i][j] = Math.max(dp[i - 1][j], cost[i] + dp[i - 1][j - weight[i]]);
             }
         }
-
-        bw.write(dp[n][c] + "");
+        bw.write(String.valueOf(dp[n][k]));
         br.close();
         bw.close();
     }
