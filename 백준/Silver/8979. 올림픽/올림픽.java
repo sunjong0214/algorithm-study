@@ -33,7 +33,6 @@ public class Main {
                     if (a[3] != b[3]) {
                         return b[3] - a[3];
                     } else {
-                        a[4]++;
                         return 0;
                     }
                 }
@@ -41,16 +40,18 @@ public class Main {
         });
 
         for (int i = 0; i < n; i++) {
+            if (i != 0 && arr[i][1] == arr[i - 1][1] && arr[i][2] == arr[i - 1][2] && arr[i][3] == arr[i - 1][3]) {
+                if (arr[i - 1][4] != 0) {
+                    arr[i][4] = arr[i - 1][4];
+                } else {
+                    arr[i][4] = i - 1;
+                }
+            }
             if (arr[i][0] == k) {
                 if (arr[i][4] == 0) {
                     bw.write((i + 1) + "");
                 } else {
-                    for (int j = i - 1; j >= 0; j--) {
-                        if (arr[j][4] == 0) {
-                            bw.write((j + 1) + "");
-                            break;
-                        }
-                    }
+                    bw.write((arr[i][4] + 1) + "");
                 }
             }
         }
