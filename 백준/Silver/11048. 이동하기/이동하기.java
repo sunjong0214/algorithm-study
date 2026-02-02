@@ -12,17 +12,18 @@ class Main {
         String[] input = br.readLine().split(" ");
         int n = Integer.parseInt(input[0]);
         int m = Integer.parseInt(input[1]);
-        int[][] dp = new int[n + 1][m + 1];
+        int[] dp = new int[m + 1];
 
         StringTokenizer st;
         for (int i = 1; i <= n; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 1; j <= m; j++) {
-                dp[i][j] = Integer.parseInt(st.nextToken()) + Math.max(dp[i - 1][j], Math.max(dp[i][j - 1], dp[i - 1][j - 1]));;        
+                int num = Integer.parseInt(st.nextToken());
+                dp[j] = num + Math.max(dp[j], dp[j - 1]);;        
             }
         }
 
-        bw.write(String.valueOf(dp[n][m]));
+        bw.write(String.valueOf(dp[m]));
         br.close();
         bw.close();
     }
