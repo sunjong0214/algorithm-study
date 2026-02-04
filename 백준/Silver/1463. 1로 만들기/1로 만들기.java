@@ -3,34 +3,26 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.*;
 
-public class Main {
-    static int min = Integer.MAX_VALUE;
+class Main {
+    static int[] dp;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int n = Integer.parseInt(br.readLine());
-        func(n, 0);
-        bw.write(min + "");
+        dp = new int[n + 1];
+
+        dp[1] = 0;
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + 1;
+            if (i % 3 == 0) dp[i] = Math.min(dp[i], dp[i / 3] + 1);
+            if (i % 2 == 0) dp[i] = Math.min(dp[i], dp[i / 2] + 1);
+        }
+        bw.write(String.valueOf(dp[n]));        
+
         br.close();
         bw.close();
-    }
-
-    private static void func(int n, int op) {
-        if (n == 1) {
-            min = Math.min(min, op);
-            return;
-        }
-        if (min <= op) {
-            return;
-        }
-        if (n % 3 == 0) {
-            func(n / 3, op + 1);
-        }
-        if (n % 2 == 0) {
-            func(n / 2, op + 1);
-        }
-        func(n - 1, op + 1);
     }
 }
