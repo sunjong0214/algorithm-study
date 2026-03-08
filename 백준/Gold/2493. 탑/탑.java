@@ -1,43 +1,43 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Stack;
-import java.util.StringTokenizer;
-
-import org.w3c.dom.Node;
+import java.io.*;
+import java.util.*;
 
 public class Main {
+    static int[][] arr;
 
-  public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    int n = Integer.parseInt(br.readLine());
-    Stack<int[]> stack = new Stack<>();
-    StringTokenizer st = new StringTokenizer(br.readLine());
-    StringBuilder sb = new StringBuilder();
+        int n = Integer.parseInt(br.readLine());
 
-    for (int i = 1; i <= n; i++) {
-      int tower = Integer.parseInt(st.nextToken());
-      if (stack.isEmpty()) {
-        sb.append("0 ");
-      }
-      while (!stack.isEmpty()) {
-        if (stack.peek()[1] > tower) {
-          sb.append(stack.peek()[0] + " ");
-          break;
-        } else {
-          stack.pop();
-          if (stack.isEmpty()) {
-            sb.append("0 ");
-            break;
-          }
+        Stack<int[]> stack = new Stack<>();
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            stack.push(new int[]{Integer.parseInt(st.nextToken()), i});
         }
-      }
-      stack.push(new int[] {i, tower});
+
+
+        int[] topIdx = new int[n];
+        Stack<int[]> temp = new Stack<>();
+
+        while (!stack.isEmpty()) {
+            int[] pop = stack.pop();
+            temp.push(pop);
+            if (stack.isEmpty()) {
+                break;
+            }
+            while (stack.peek()[0] > temp.peek()[0]) {
+                int[] tPop = temp.pop();
+                topIdx[tPop[1]] = stack.size();
+                if (temp.isEmpty()) break;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            bw.write(topIdx[i] + " ");
+        }
+        br.close();
+        bw.close();
     }
-    sb.deleteCharAt(sb.length() - 1);
-    System.out.println(sb);
-    br.close();
-  }
 }
