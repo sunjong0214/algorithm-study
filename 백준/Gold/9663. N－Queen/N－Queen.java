@@ -1,39 +1,44 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
 public class Main {
+    static int n;
+    static int cnt;
+    static boolean[] col;
+    static boolean[] dr;
+    static boolean[] dl;
 
-  static int n, result = 0;
-  static boolean[] isUsed = new boolean[40]; // 행
-  static boolean[] isLUsed = new boolean[40]; // 왼쪽 : x - y가 같음
-  static boolean[] isRUsed = new boolean[40]; // 오른쪽 : x + y가 같음
-  static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-  public static void main(String[] args) throws IOException {
+        n = Integer.parseInt(br.readLine());
 
-    n = Integer.parseInt(br.readLine());
-    func(0);
-    System.out.println(result);
-    br.close();
-  }
+        col = new boolean[n];
+        dr = new boolean[n + n];
+        dl = new boolean[n + n];
 
-  static void func(int k) throws IOException {
-    if (k == n) {
-      result++;
-      return;
+        queen(0);
+
+        bw.write(cnt + "");
+        br.close();
+        bw.close();
     }
 
-    for (int i = 0; i < n; i++) {
-      if (!isUsed[i] && !isLUsed[k-i+n] && !isRUsed[k+i]) {
-        isUsed[i] = true;
-        isLUsed[k-i+n] = true;
-        isRUsed[k+i] = true;
-        func(k+1);
-        isUsed[i] = false;
-        isLUsed[k-i+n] = false;
-        isRUsed[k+i] = false;
-      }
+    private static void queen(int row) {
+        if (row == n) {
+            cnt++;
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            if (col[i] || dr[i + row] || dl[n + i - row]) continue;
+            col[i] = true;
+            dr[i + row] = true;
+            dl[n + i - row] = true;
+            queen(row + 1);
+            col[i] = false;
+            dr[i + row] = false;
+            dl[n + i - row] = false;
+        }
     }
-  }
 }
